@@ -28,15 +28,11 @@ class WeatherViewController: UIViewController {
         tableView.backgroundColor = backgroundDay
         
         location = defaults.string(forKey: "location") ?? "Mannheim"
-        let interval = defaults.integer(forKey: "refreshInterval")
         
         log.info("Location: \(location)")
-        log.info("Refresh interval: \(interval)")
         
         loadWeather(location: location)
         loadForecast(location: location)
-        
-        
     }
 
     override func viewWillDisappear(_ animated: Bool) {

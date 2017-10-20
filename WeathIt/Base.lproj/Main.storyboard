@@ -160,6 +160,9 @@
                         </connections>
                     </pickerView>
                     <navigationItem key="navigationItem" title="Aktualisierungsintervall" id="IPf-Ry-n1g"/>
+                    <connections>
+                        <outlet property="pickerView" destination="29b-MW-ajq" id="mre-xO-IE5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A8x-Wh-FNY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
