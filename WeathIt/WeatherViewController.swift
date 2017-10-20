@@ -20,6 +20,8 @@ class WeatherViewController: UIViewController {
     
     var location = ""
     let defaults = UserDefaults.standard
+    
+    var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +35,38 @@ class WeatherViewController: UIViewController {
         
         loadWeather(location: location)
         loadForecast(location: location)
+        
+        setupTimer()
+        defaults.addObserver(self, forKeyPath: "refreshInterval", options: .new, context: nil)
     }
-
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath != "refreshInterval" {
+            return
+        }
+        DispatchQueue.main.async {
+            self.setupTimer()
+        }
+    }
+    
+    func setupTimer() {
+        log.debug("Setting up timer")
+        let serializedInterval = defaults.object(forKey: "refreshInterval") as? UInt
+        var interval: RefreshInterval = .perMinute(5)
+        if let si = serializedInterval, let i = RefreshInterval.parse(serialized: si) {
+            interval = i
+        }
+        log.debug("Interval: \(interval.toString())")
+        if let timer = timer {
+            timer.invalidate()
+        }
+        timer = Timer.scheduledTimer(withTimeInterval: interval.toTimeInterval(), repeats: true, block: { _ in
+            log.info("Refreshing weather data")
+            self.loadWeather(location: self.location)
+            self.loadForecast(location: self.location)
+        })
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         if isMovingFromParentViewController {
             log.debug("Going back to search")
@@ -44,7 +76,7 @@ class WeatherViewController: UIViewController {
 
     func loadWeather(location: String) {
         LoadingIndicator.increase()
-        headerView.isHidden = true
+
         Alamofire
             .request(
                 "https://api.openweathermap.org/data/2.5/weather",
@@ -65,12 +97,14 @@ class WeatherViewController: UIViewController {
                     return
                 }
                 let json = JSON(data: data)
-                log.debug(json)
+                //log.debug(json)
                 
                 if json["cod"].intValue == 404 {
                     log.info("Location not found")
                     return
                 }
+                
+                log.info("Weather loaded")
                 
                 let timestamp = json["dt"].uInt64Value
                 let temp = json["main"]["temp"].doubleValue
@@ -91,18 +125,12 @@ class WeatherViewController: UIViewController {
                     self.headerView.backgroundColor = self.backgroundDay
                     self.view.backgroundColor = self.backgroundDay
                 }
-                
-                self.headerView.isHidden = false
             }
     }
     
     func loadForecast(location: String) {
         LoadingIndicator.increase()
-        
         let dataSource = tableView.dataSource as! DataSource
-        dataSource.update(weatherList: [])
-        tableView.reloadData()
-        
         Alamofire
             .request(
                 "https://api.openweathermap.org/data/2.5/forecast",
@@ -128,7 +156,7 @@ class WeatherViewController: UIViewController {
                     return
                 }
                 
-                log.debug(json)
+                // log.debug(json)
                 
                 let weatherList = json["list"].arrayValue.map { (data) -> Weather in
                     let timestamp = data["dt"].uInt64Value
@@ -140,6 +168,8 @@ class WeatherViewController: UIViewController {
                     
                     return Weather(timestamp: timestamp, degrees: Int(temp.rounded()), description: description, icon: icon)
                 }
+                
+                log.info("Forecast loaded with \(weatherList.count) items")
                 
                 dataSource.update(weatherList: weatherList)
                 self.tableView.reloadData()
