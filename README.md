@@ -1,5 +1,9 @@
 # WeathIt
 
+## Credits
+
+Material weather icons by [Kevin Aguilar](https://www.uplabs.com/kevinttob)
+
 ## Screenshots
 
 ![Start screen](Screenshots/1.png)
