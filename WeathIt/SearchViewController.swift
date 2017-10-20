@@ -12,25 +12,21 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         searchBar.delegate = self
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        
+        if let location = defaults.string(forKey: "location"), !location.isEmpty {
+            performSegue(withIdentifier: "showWeather", sender: self)
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        performSegue(withIdentifier: "showWeather", sender: self)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "showWeather" else {
-            return
+        if let text = searchBar.text {
+            defaults.set(text, forKey: "location")
+            performSegue(withIdentifier: "showWeather", sender: self)
         }
-        let viewController = segue.destination as! WeatherViewController
-        viewController.loadWeather(location: searchBar.text!)
-        viewController.loadForecast(location: searchBar.text!)
     }
     
 }

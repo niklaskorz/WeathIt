@@ -17,19 +17,38 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
     
     let backgroundDay = UIColor(hue: 0.55, saturation: 0.77, brightness: 0.92, alpha: 1.00)
     let backgroundNight = UIColor(hue: 0.58, saturation: 0.91, brightness: 0.50, alpha: 1.00)
+    
+    var location = ""
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         headerView.backgroundColor = backgroundDay
         tableView.backgroundColor = backgroundDay
+        
+        location = defaults.string(forKey: "location") ?? "Mannheim"
+        let interval = defaults.integer(forKey: "refreshInterval")
+        
+        log.info("Location: \(location)")
+        log.info("Refresh interval: \(interval)")
+        
+        loadWeather(location: location)
+        loadForecast(location: location)
+        
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewWillDisappear(_ animated: Bool) {
+        if isMovingFromParentViewController {
+            log.debug("Going back to search")
+            defaults.removeObject(forKey: "location")
+        }
     }
 
     func loadWeather(location: String) {
+        LoadingIndicator.increase()
+        headerView.isHidden = true
         Alamofire
             .request(
                 "https://api.openweathermap.org/data/2.5/weather",
@@ -42,6 +61,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
                 ]
             )
             .responseJSON { response in
+                LoadingIndicator.decrease()
                 if let error = response.error {
                     log.error(error)
                 }
@@ -75,10 +95,18 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
                     self.headerView.backgroundColor = self.backgroundDay
                     self.view.backgroundColor = self.backgroundDay
                 }
+                
+                self.headerView.isHidden = false
             }
     }
     
     func loadForecast(location: String) {
+        LoadingIndicator.increase()
+        
+        let dataSource = tableView.dataSource as! DataSource
+        dataSource.update(weatherList: [])
+        tableView.reloadData()
+        
         Alamofire
             .request(
                 "https://api.openweathermap.org/data/2.5/forecast",
@@ -90,6 +118,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
                 ]
             )
             .responseJSON { response in
+                LoadingIndicator.decrease()
                 if let error = response.error {
                     log.error(error)
                 }
@@ -116,7 +145,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
                     return Weather(timestamp: timestamp, degrees: Int(temp.rounded()), description: description, icon: icon)
                 }
                 
-                let dataSource = self.tableView.dataSource as! DataSource
                 dataSource.update(weatherList: weatherList)
                 self.tableView.reloadData()
         }
