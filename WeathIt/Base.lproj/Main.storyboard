@@ -127,11 +127,14 @@
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="GbZ-XM-rDQ" id="gTR-lD-scb"/>
-                            <outlet property="delegate" destination="BYZ-38-t0r" id="l90-SQ-72H"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Wetter" id="fDt-Mx-SxR">
-                        <barButtonItem key="rightBarButtonItem" title="Intervall" id="i46-rj-JjY"/>
+                        <barButtonItem key="rightBarButtonItem" title="Intervall" id="i46-rj-JjY">
+                            <connections>
+                                <segue destination="Z7v-Fw-cvr" kind="show" id="Sb2-mn-l9q"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="headerView" destination="xnX-fL-QYb" id="HtY-OH-fci"/>
@@ -142,6 +145,25 @@
                 <customObject id="GbZ-XM-rDQ" userLabel="DataSource" customClass="DataSource" customModule="WeathIt" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="637.60000000000002" y="98.50074962518741"/>
+        </scene>
+        <!--Aktualisierungsintervall-->
+        <scene sceneID="2j6-Lg-D17">
+            <objects>
+                <viewController id="Z7v-Fw-cvr" customClass="PickerViewController" customModule="WeathIt" customModuleProvider="target" sceneMemberID="viewController">
+                    <pickerView key="view" contentMode="scaleToFill" id="29b-MW-ajq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <connections>
+                            <outlet property="dataSource" destination="Z7v-Fw-cvr" id="eE5-FS-3On"/>
+                            <outlet property="delegate" destination="Z7v-Fw-cvr" id="m02-jT-HB9"/>
+                        </connections>
+                    </pickerView>
+                    <navigationItem key="navigationItem" title="Aktualisierungsintervall" id="IPf-Ry-n1g"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A8x-Wh-FNY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1666" y="99"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zqM-b9-rcq">

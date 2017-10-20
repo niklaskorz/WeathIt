@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class WeatherViewController: UIViewController, UITableViewDelegate {
+class WeatherViewController: UIViewController {
     
     @IBOutlet weak var headerView: WeatherHeaderView!
     @IBOutlet weak var tableView: UITableView!
