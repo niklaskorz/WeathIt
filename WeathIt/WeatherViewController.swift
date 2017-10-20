@@ -34,7 +34,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
             .request(
                 "https://api.openweathermap.org/data/2.5/weather",
                 parameters: [
-                    "APPID": "38701a75a7aa6442d0233cc75d8a5867", // Random placeholder, replace with your own
+                    "APPID": API_KEY,
                     "lang": "de",
                     "units": "metric",
                     // "type": "accurate",
@@ -83,7 +83,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate {
             .request(
                 "https://api.openweathermap.org/data/2.5/forecast",
                 parameters: [
-                    "APPID": "38701a75a7aa6442d0233cc75d8a5867", // Random placeholder, replace with your own
+                    "APPID": API_KEY,
                     "lang": "de",
                     "units": "metric",
                     "q": location

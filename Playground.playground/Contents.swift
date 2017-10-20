@@ -11,7 +11,7 @@ Alamofire
     .request(
         "https://api.openweathermap.org/data/2.5/weather",
         parameters: [
-            "APPID": "38701a75a7aa6442d0233cc75d8a5867",
+            "APPID": API_KEY,
             "lang": "de",
             "units": "metric",
             "type": "accurate",
