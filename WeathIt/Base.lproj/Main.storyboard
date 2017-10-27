@@ -130,6 +130,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Wetter" id="fDt-Mx-SxR">
+                        <barButtonItem key="backBarButtonItem" title="Wetter" id="LAY-Ig-1eJ"/>
                         <barButtonItem key="rightBarButtonItem" title="Intervall" id="i46-rj-JjY">
                             <connections>
                                 <segue destination="Z7v-Fw-cvr" kind="show" id="Sb2-mn-l9q"/>
