@@ -80,9 +80,8 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
-        if let serializedInterval = defaults.object(forKey: "refreshInterval") as? UInt,
-            let interval = RefreshInterval.parse(serialized: serializedInterval),
-            let index = intervalOptions.index(where: { $0 == interval }) {
+        let interval = SettingsController.shared.refreshInterval
+        if let index = intervalOptions.index(where: { $0 == interval }) {
             pickerView.selectRow(index, inComponent: 0, animated: false)
         }
     }
@@ -104,7 +103,7 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         log.info("Selected interval: \(intervalOptions[row].toString())")
-        defaults.set(intervalOptions[row].serialize(), forKey: "refreshInterval")
+        SettingsController.shared.refreshInterval = intervalOptions[row]
     }
     
 }

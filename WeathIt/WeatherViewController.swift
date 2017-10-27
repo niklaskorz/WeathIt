@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, WeatherModelSubscriber {
+class WeatherViewController: UIViewController, WeatherModelSubscriber, SettingsControllerDelegate {
     
     @IBOutlet weak var headerView: WeatherHeaderView!
     @IBOutlet weak var tableView: UITableView!
@@ -16,56 +16,32 @@ class WeatherViewController: UIViewController, WeatherModelSubscriber {
     let backgroundDay = UIColor(hue: 0.55, saturation: 0.77, brightness: 0.92, alpha: 1.00)
     let backgroundNight = UIColor(hue: 0.58, saturation: 0.91, brightness: 0.50, alpha: 1.00)
     
-    var location = ""
     let defaults = UserDefaults.standard
     
-    var modelController: WeatherModelController!
+    let modelController = WeatherModelController.shared
+    let settingsController = SettingsController.shared
+    
+    var location: String?
     var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        modelController = WeatherModelController(subscriber: self)
+        modelController.subscriber = self
+        settingsController.delegate = self
         
         headerView.backgroundColor = backgroundDay
         tableView.backgroundColor = backgroundDay
         
-        location = defaults.string(forKey: "location") ?? "Mannheim" // Mannheim as fallback for debugging
-        
-        log.info("Location: \(location)")
-        
-        modelController.loadWeather(location: location)
-        modelController.loadForecast(location: location)
-        
-        setupTimer()
-        defaults.addObserver(self, forKeyPath: "refreshInterval", options: .new, context: nil)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath != "refreshInterval" {
-            return
+        if let location = SettingsController.shared.location {
+            self.location = location
+            log.info("Location: \(location)")
+            modelController.loadWeather(location: location)
+            modelController.loadForecast(location: location)
+            setupTimer()
+        } else {
+            performSegue(withIdentifier: "locationSegue", sender: self)
         }
-        DispatchQueue.main.async {
-            self.setupTimer()
-        }
-    }
-    
-    func setupTimer() {
-        log.debug("Setting up timer")
-        let serializedInterval = defaults.object(forKey: "refreshInterval") as? UInt
-        var interval: RefreshInterval = .perMinute(5)
-        if let si = serializedInterval, let i = RefreshInterval.parse(serialized: si) {
-            interval = i
-        }
-        log.debug("Interval: \(interval.toString())")
-        if let timer = timer {
-            timer.invalidate()
-        }
-        timer = Timer.scheduledTimer(withTimeInterval: interval.toTimeInterval(), repeats: true, block: { _ in
-            log.info("Refreshing weather data")
-            self.modelController.loadWeather(location: self.location)
-            self.modelController.loadForecast(location: self.location)
-        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,6 +49,37 @@ class WeatherViewController: UIViewController, WeatherModelSubscriber {
             log.debug("Going back to search")
             defaults.removeObject(forKey: "location")
         }
+    }
+    
+    func setupTimer() {
+        log.debug("Setting up timer")
+        let interval = settingsController.refreshInterval
+        log.debug("Interval: \(interval.toString())")
+        if let timer = timer {
+            timer.invalidate()
+        }
+        timer = Timer.scheduledTimer(withTimeInterval: interval.toTimeInterval(), repeats: true, block: self.scheduledUpdate)
+    }
+    
+    func scheduledUpdate(timer: Timer) {
+        if let location = location {
+            log.info("Refreshing weather data")
+            modelController.loadWeather(location: location)
+            modelController.loadForecast(location: location)
+        }
+    }
+    
+    func locationDidChange(location: String?) {
+        if let location = location {
+            self.location = location
+            log.info("Location: \(location)")
+            modelController.loadWeather(location: location)
+            modelController.loadForecast(location: location)
+        }
+    }
+    
+    func refreshIntervalDidChange(refreshInterval: RefreshInterval) {
+        setupTimer()
     }
 
     func weatherDidUpdate(weather: Weather, isNight: Bool, location: String) {
@@ -92,6 +99,5 @@ class WeatherViewController: UIViewController, WeatherModelSubscriber {
         dataSource.update(forecast: forecast)
         tableView.reloadData()
     }
-
 }
 

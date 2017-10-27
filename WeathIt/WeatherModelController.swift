@@ -15,11 +15,9 @@ protocol WeatherModelSubscriber {
 }
 
 class WeatherModelController {
-    let subscriber: WeatherModelSubscriber
+    static let shared = WeatherModelController()
     
-    init(subscriber: WeatherModelSubscriber) {
-        self.subscriber = subscriber
-    }
+    var subscriber: WeatherModelSubscriber?
     
     func loadWeather(location: String) {
         LoadingIndicator.increase()
@@ -51,7 +49,7 @@ class WeatherModelController {
             
             let weather = Weather(timestamp: timestamp, degrees: Int(temp.rounded()), description: description, icon: icon)
             
-            self.subscriber.weatherDidUpdate(weather: weather, isNight: icon.last == "n", location: location)
+            self.subscriber?.weatherDidUpdate(weather: weather, isNight: icon.last == "n", location: location)
         }
     }
     
@@ -83,7 +81,7 @@ class WeatherModelController {
                 return Weather(timestamp: timestamp, degrees: Int(temp.rounded()), description: description, icon: icon)
             }
             
-            self.subscriber.forecastDidUpdate(forecast: weatherList)
+            self.subscriber?.forecastDidUpdate(forecast: weatherList)
             
             log.info("Forecast loaded with \(weatherList.count) items")
         }

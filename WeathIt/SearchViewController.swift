@@ -9,24 +9,15 @@
 import UIKit
 
 class SearchViewController: UIViewController, UISearchBarDelegate {
-    
-    @IBOutlet weak var searchBar: UISearchBar!
-    
     let defaults = UserDefaults.standard
-    
-    override func viewDidLoad() {
-        searchBar.delegate = self
-        
-        if let location = defaults.string(forKey: "location"), !location.isEmpty {
-            performSegue(withIdentifier: "showWeather", sender: self)
-        }
-    }
+    let modelController = WeatherModelController.shared
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
+            navigationController?.popViewController(animated: true)
+            modelController.loadWeather(location: text)
+            modelController.loadForecast(location: text)
             defaults.set(text, forKey: "location")
-            performSegue(withIdentifier: "showWeather", sender: self)
         }
     }
-    
 }
