@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import Alamofire
-import SwiftyJSON
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: UIViewController, WeatherModelSubscriber {
     
     @IBOutlet weak var headerView: WeatherHeaderView!
     @IBOutlet weak var tableView: UITableView!
@@ -21,20 +19,23 @@ class WeatherViewController: UIViewController {
     var location = ""
     let defaults = UserDefaults.standard
     
+    var modelController: WeatherModelController!
     var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        modelController = WeatherModelController(subscriber: self)
+        
         headerView.backgroundColor = backgroundDay
         tableView.backgroundColor = backgroundDay
         
-        location = defaults.string(forKey: "location") ?? "Mannheim"
+        location = defaults.string(forKey: "location") ?? "Mannheim" // Mannheim as fallback for debugging
         
         log.info("Location: \(location)")
         
-        loadWeather(location: location)
-        loadForecast(location: location)
+        modelController.loadWeather(location: location)
+        modelController.loadForecast(location: location)
         
         setupTimer()
         defaults.addObserver(self, forKeyPath: "refreshInterval", options: .new, context: nil)
@@ -62,8 +63,8 @@ class WeatherViewController: UIViewController {
         }
         timer = Timer.scheduledTimer(withTimeInterval: interval.toTimeInterval(), repeats: true, block: { _ in
             log.info("Refreshing weather data")
-            self.loadWeather(location: self.location)
-            self.loadForecast(location: self.location)
+            self.modelController.loadWeather(location: self.location)
+            self.modelController.loadForecast(location: self.location)
         })
     }
     
@@ -74,106 +75,22 @@ class WeatherViewController: UIViewController {
         }
     }
 
-    func loadWeather(location: String) {
-        LoadingIndicator.increase()
-
-        Alamofire
-            .request(
-                "https://api.openweathermap.org/data/2.5/weather",
-                parameters: [
-                    "APPID": API_KEY,
-                    "lang": "de",
-                    "units": "metric",
-                    // "type": "accurate",
-                    "q": location
-                ]
-            )
-            .responseJSON { response in
-                LoadingIndicator.decrease()
-                if let error = response.error {
-                    log.error(error)
-                }
-                guard let data = response.data else {
-                    return
-                }
-                let json = JSON(data: data)
-                //log.debug(json)
-                
-                if json["cod"].intValue == 404 {
-                    log.info("Location not found")
-                    return
-                }
-                
-                log.info("Weather loaded")
-                
-                let timestamp = json["dt"].uInt64Value
-                let temp = json["main"]["temp"].doubleValue
-                let location = json["name"].stringValue
-                let weatherData = json["weather"][0]
-                let description = weatherData["description"].stringValue
-                let iconId = weatherData["icon"].stringValue
-                let icon = UIImage(named: iconId + ".png")
-                
-                let weather = Weather(timestamp: timestamp, degrees: Int(temp.rounded()), description: description, icon: icon)
-                
-                self.headerView.update(location: location, weather: weather)
-                
-                if iconId.last == "n" {
-                    self.headerView.backgroundColor = self.backgroundNight
-                    self.view.backgroundColor = self.backgroundNight
-                } else {
-                    self.headerView.backgroundColor = self.backgroundDay
-                    self.view.backgroundColor = self.backgroundDay
-                }
-            }
+    func weatherDidUpdate(weather: Weather, isNight: Bool, location: String) {
+        headerView.update(location: location, weather: weather)
+        
+        if isNight {
+            headerView.backgroundColor = backgroundNight
+            view.backgroundColor = backgroundNight
+        } else {
+            headerView.backgroundColor = backgroundDay
+            view.backgroundColor = backgroundDay
+        }
     }
     
-    func loadForecast(location: String) {
-        LoadingIndicator.increase()
-        let dataSource = tableView.dataSource as! DataSource
-        Alamofire
-            .request(
-                "https://api.openweathermap.org/data/2.5/forecast",
-                parameters: [
-                    "APPID": API_KEY,
-                    "lang": "de",
-                    "units": "metric",
-                    "q": location
-                ]
-            )
-            .responseJSON { response in
-                LoadingIndicator.decrease()
-                if let error = response.error {
-                    log.error(error)
-                }
-                guard let data = response.data else {
-                    return
-                }
-                let json = JSON(data: data)
-                
-                if json["cod"].intValue == 404 {
-                    log.info("Location not found")
-                    return
-                }
-                
-                // log.debug(json)
-                
-                let weatherList = json["list"].arrayValue.map { (data) -> Weather in
-                    let timestamp = data["dt"].uInt64Value
-                    let temp = data["main"]["temp"].doubleValue
-                    let weatherData = data["weather"][0]
-                    let description = weatherData["description"].stringValue
-                    let iconId = weatherData["icon"].stringValue
-                    let icon = UIImage(named: iconId + ".png")
-                    
-                    return Weather(timestamp: timestamp, degrees: Int(temp.rounded()), description: description, icon: icon)
-                }
-                
-                log.info("Forecast loaded with \(weatherList.count) items")
-                
-                dataSource.update(weatherList: weatherList)
-                self.tableView.reloadData()
-        }
+    func forecastDidUpdate(forecast: [Weather]) {
+        let dataSource = tableView.dataSource as! ForecastDataSource
+        dataSource.update(forecast: forecast)
+        tableView.reloadData()
     }
 
 }

@@ -6,11 +6,11 @@
 //  Copyright © 2017 Niklas Korz. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 struct Weather {
     let timestamp: UInt64
     let degrees: Int
     let description: String
-    let icon: UIImage?
+    let icon: String // Identifier for the weather icon, see OpenWeatherMap API for a list
 }

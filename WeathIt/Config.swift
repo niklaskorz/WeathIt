@@ -8,4 +8,4 @@
 
 import Foundation
 
-let API_KEY = REPLACE_ME
+let API_KEY = "9efe6dc3323956800e80b03883af0284"

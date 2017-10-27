@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class ForecastTableViewCell: UITableViewCell {
     
     static let identifier = "CellReuseIdentifier"
     

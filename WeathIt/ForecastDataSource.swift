@@ -8,7 +8,8 @@
 
 import UIKit
 
-class DataSource: NSObject, UITableViewDataSource {
+// DataSource for the weather forecast table
+class ForecastDataSource: NSObject, UITableViewDataSource {
     
     let dateFormatter = DateFormatter()
     
@@ -18,8 +19,8 @@ class DataSource: NSObject, UITableViewDataSource {
         dateFormatter.dateFormat = "dd.MM.yyyy HH"
     }
     
-    func update(weatherList: [Weather]) {
-        self.weatherList = weatherList
+    func update(forecast: [Weather]) {
+        weatherList = forecast
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -31,10 +32,10 @@ class DataSource: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier, for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ForecastTableViewCell.identifier, for: indexPath) as! ForecastTableViewCell
         
         let weather = weatherList[indexPath.row]
-        cell.iconImageView.image = weather.icon
+        cell.iconImageView.image = UIImage(named: "\(weather.icon).png")
         let date = Date(timeIntervalSince1970: TimeInterval(weather.timestamp))
         cell.dateLabel.text = dateFormatter.string(from: date) + " Uhr"
         cell.degreesLabel.text = "\(weather.degrees)°C"

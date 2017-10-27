@@ -70,7 +70,7 @@
                             </connections>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellReuseIdentifier" selectionStyle="none" indentationWidth="10" reuseIdentifier="CellReuseIdentifier" rowHeight="86" id="nXZ-po-5YJ" customClass="TableViewCell" customModule="WeathIt" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellReuseIdentifier" selectionStyle="none" indentationWidth="10" reuseIdentifier="CellReuseIdentifier" rowHeight="86" id="nXZ-po-5YJ" customClass="ForecastTableViewCell" customModule="WeathIt" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="321" width="375" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nXZ-po-5YJ" id="XpK-hP-VRZ">
