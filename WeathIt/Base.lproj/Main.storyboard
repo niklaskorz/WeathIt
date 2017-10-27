@@ -126,7 +126,7 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="GbZ-XM-rDQ" id="gTR-lD-scb"/>
+                            <outlet property="dataSource" destination="GbZ-XM-rDQ" id="6TZ-ox-Xcp"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Wetter" id="fDt-Mx-SxR">
@@ -142,7 +142,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <customObject id="GbZ-XM-rDQ" userLabel="DataSource" customClass="DataSource" customModule="WeathIt" customModuleProvider="target"/>
+                <customObject id="GbZ-XM-rDQ" userLabel="ForecastDataSource" customClass="ForecastDataSource" customModule="WeathIt" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="637.60000000000002" y="98.50074962518741"/>
         </scene>
@@ -224,7 +224,7 @@
                         <viewLayoutGuide key="safeArea" id="bWH-UQ-SSG"/>
                     </view>
                     <navigationItem key="navigationItem" title="Suche" id="rkv-pU-f8Z">
-                        <barButtonItem key="backBarButtonItem" title="Zurück" id="AU5-OV-T18"/>
+                        <barButtonItem key="backBarButtonItem" title="Suche" id="AU5-OV-T18"/>
                     </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="mey-pp-pGU" id="gNy-tN-aju"/>
