@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Controller for the location search scene
 class SearchViewController: UIViewController, UISearchBarDelegate {
     let defaults = UserDefaults.standard
     let modelController = WeatherModelController.shared

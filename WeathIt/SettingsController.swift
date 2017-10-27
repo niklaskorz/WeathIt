@@ -16,7 +16,7 @@ protocol SettingsControllerDelegate {
 class SettingsController {
     static let shared = SettingsController()
     let defaults = UserDefaults.standard
-    var delegate: SettingsControllerDelegate?
+    var delegate: SettingsControllerDelegate? = nil
     
     var location: String? {
         set {
@@ -25,6 +25,7 @@ class SettingsController {
             } else {
                 defaults.removeObject(forKey: "location")
             }
+            delegate?.locationDidChange(location: newValue)
         }
         get {
             return defaults.string(forKey: "location")
@@ -35,6 +36,7 @@ class SettingsController {
     var refreshInterval: RefreshInterval {
         set {
             defaults.set(newValue.serialize(), forKey: "refreshInterval")
+            delegate?.refreshIntervalDidChange(refreshInterval: newValue)
         }
         get {
             if let serializedInterval = defaults.object(forKey: "refreshInterval") as? UInt,
@@ -44,6 +46,4 @@ class SettingsController {
             return defaultRefreshInterval
         }
     }
-    
-    init() {}
 }
