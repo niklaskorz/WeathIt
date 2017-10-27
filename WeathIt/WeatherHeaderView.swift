@@ -23,7 +23,7 @@ class WeatherHeaderView: UIView {
         locationLabel.text = location
         degreesLabel.text = "\(weather.degrees)°C"
         descriptionLabel.text = weather.description
-        iconImageView.image = UIImage(named: "\(weather.icon).png")
+        iconImageView.image = UIImage(named: weather.icon)
     }
 
 }

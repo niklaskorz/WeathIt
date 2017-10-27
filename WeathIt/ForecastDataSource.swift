@@ -35,7 +35,7 @@ class ForecastDataSource: NSObject, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ForecastTableViewCell.identifier, for: indexPath) as! ForecastTableViewCell
         
         let weather = weatherList[indexPath.row]
-        cell.iconImageView.image = UIImage(named: "\(weather.icon).png")
+        cell.iconImageView.image = UIImage(named: weather.icon)
         let date = Date(timeIntervalSince1970: TimeInterval(weather.timestamp))
         cell.dateLabel.text = dateFormatter.string(from: date) + " Uhr"
         cell.degreesLabel.text = "\(weather.degrees)°C"
