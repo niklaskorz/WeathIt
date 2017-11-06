@@ -64,7 +64,7 @@ func ==(lhs: RefreshInterval, rhs: RefreshInterval) -> Bool {
     }
 }
 
-class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class RefreshIntervalPickerViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var pickerView: UIPickerView!
     

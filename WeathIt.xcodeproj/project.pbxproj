@@ -16,7 +16,7 @@
 		451C66131F9A092D00D8D0A9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C66121F9A092D00D8D0A9 /* SearchViewController.swift */; };
 		451C66151F9A18A800D8D0A9 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C66141F9A18A800D8D0A9 /* Config.swift */; };
 		45335A131F9A21310035119E /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45335A121F9A21310035119E /* LoadingIndicator.swift */; };
-		45335A151F9A24CB0035119E /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45335A141F9A24CB0035119E /* PickerViewController.swift */; };
+		45335A151F9A24CB0035119E /* RefreshIntervalPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45335A141F9A24CB0035119E /* RefreshIntervalPickerViewController.swift */; };
 		453A36AF1F90DBE9000039CF /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A36AE1F90DBE9000039CF /* ForecastTableViewCell.swift */; };
 		456DCE5F1F99EDC500B752EB /* WeatherHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DCE5E1F99EDC500B752EB /* WeatherHeaderView.swift */; };
 		456DCE611F99F44900B752EB /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DCE601F99F44900B752EB /* Weather.swift */; };
@@ -39,7 +39,7 @@
 		451C66121F9A092D00D8D0A9 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		451C66141F9A18A800D8D0A9 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		45335A121F9A21310035119E /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
-		45335A141F9A24CB0035119E /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
+		45335A141F9A24CB0035119E /* RefreshIntervalPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshIntervalPickerViewController.swift; sourceTree = "<group>"; };
 		453A36AE1F90DBE9000039CF /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 		456DCE5E1F99EDC500B752EB /* WeatherHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHeaderView.swift; sourceTree = "<group>"; };
 		456DCE601F99F44900B752EB /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 				456DCE5E1F99EDC500B752EB /* WeatherHeaderView.swift */,
 				4502F38E1F90D8A100AD18B8 /* ForecastDataSource.swift */,
 				453A36AE1F90DBE9000039CF /* ForecastTableViewCell.swift */,
-				45335A141F9A24CB0035119E /* PickerViewController.swift */,
+				45335A141F9A24CB0035119E /* RefreshIntervalPickerViewController.swift */,
 				451690A01FA334E700FAA1E7 /* Supporting files */,
 				4502F37A1F90D76200AD18B8 /* Products */,
 			);
@@ -253,7 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45335A151F9A24CB0035119E /* PickerViewController.swift in Sources */,
+				45335A151F9A24CB0035119E /* RefreshIntervalPickerViewController.swift in Sources */,
 				459FAC191FA35D330021FB59 /* SettingsController.swift in Sources */,
 				45D2168A1FA32D47002B5F2E /* WeatherLoader.swift in Sources */,
 				45335A131F9A21310035119E /* LoadingIndicator.swift in Sources */,
