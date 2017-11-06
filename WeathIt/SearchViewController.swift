@@ -14,7 +14,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     let modelController = WeatherModelController.shared
     
     override func viewDidLoad() {
-        navigationItem.hidesBackButton = SettingsController.shared.location == nil
+        let firstStart = SettingsController.shared.location == nil
+        navigationItem.hidesBackButton = firstStart
+        if firstStart {
+            log.info("Welcome!")
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
