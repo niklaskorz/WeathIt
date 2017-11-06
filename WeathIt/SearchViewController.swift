@@ -13,12 +13,14 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     let defaults = UserDefaults.standard
     let modelController = WeatherModelController.shared
     
+    override func viewDidLoad() {
+        navigationItem.hidesBackButton = SettingsController.shared.location == nil
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
             navigationController?.popViewController(animated: true)
-            modelController.loadWeather(location: text)
-            modelController.loadForecast(location: text)
-            defaults.set(text, forKey: "location")
+            SettingsController.shared.location = text
         }
     }
 }
