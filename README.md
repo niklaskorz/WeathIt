@@ -1,5 +1,7 @@
 # WeathIt
 
+Requires Xcode 9, Swift 4 and iOS 11.
+
 ## Credits
 
 Material weather icons by [Kevin Aguilar](https://www.uplabs.com/kevinttob)
