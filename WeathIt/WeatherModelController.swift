@@ -29,6 +29,7 @@ class WeatherModelController {
                 return
             }
             guard let data = response.data else {
+                log.error("No weather data returned by API")
                 return
             }
             let json = JSON(data: data)
@@ -62,6 +63,7 @@ class WeatherModelController {
                 return
             }
             guard let data = response.data else {
+                log.error("No forecast data returned by API")
                 return
             }
             let json = JSON(data: data)
