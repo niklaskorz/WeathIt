@@ -26,6 +26,7 @@ class WeatherModelController {
             LoadingIndicator.decrease()
             if let error = response.error {
                 log.error(error)
+                return
             }
             guard let data = response.data else {
                 return
@@ -58,6 +59,7 @@ class WeatherModelController {
             LoadingIndicator.decrease()
             if let error = response.error {
                 log.error(error)
+                return
             }
             guard let data = response.data else {
                 return
