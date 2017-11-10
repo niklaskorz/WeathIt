@@ -32,6 +32,7 @@ class WeatherModelController {
                 log.error("No weather data returned by API")
                 return
             }
+            // SwiftyJSON 4 throws an error when JSON data could not be parsed
             guard let json = try? JSON(data: data) else {
                 log.error("JSON weather data could not be parsed")
                 return
@@ -68,6 +69,7 @@ class WeatherModelController {
                 log.error("No forecast data returned by API")
                 return
             }
+            // SwiftyJSON 4 throws an error when JSON data could not be parsed
             guard let json = try? JSON(data: data) else {
                 log.error("JSON forecast data could not be parsed")
                 return
