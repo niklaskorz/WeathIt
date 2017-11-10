@@ -32,8 +32,10 @@ class WeatherModelController {
                 log.error("No weather data returned by API")
                 return
             }
-            let json = JSON(data: data)
-            //log.debug(json)
+            guard let json = try? JSON(data: data) else {
+                log.error("JSON weather data could not be parsed")
+                return
+            }
             
             if json["cod"].intValue == 404 {
                 log.info("Location not found")
@@ -66,14 +68,15 @@ class WeatherModelController {
                 log.error("No forecast data returned by API")
                 return
             }
-            let json = JSON(data: data)
+            guard let json = try? JSON(data: data) else {
+                log.error("JSON forecast data could not be parsed")
+                return
+            }
             
             if json["cod"].intValue == 404 {
                 log.info("Location not found")
                 return
             }
-            
-            // log.debug(json)
             
             let weatherList = json["list"].arrayValue.map { (data) -> Weather in
                 let timestamp = data["dt"].uInt64Value
