@@ -87,10 +87,10 @@ class WeatherViewController: UIViewController, WeatherModelSubscriber, SettingsC
         
         if isNight {
             headerView.backgroundColor = backgroundNight
-            view.backgroundColor = backgroundNight
+            tableView.backgroundColor = backgroundNight
         } else {
             headerView.backgroundColor = backgroundDay
-            view.backgroundColor = backgroundDay
+            tableView.backgroundColor = backgroundDay
         }
     }
     
