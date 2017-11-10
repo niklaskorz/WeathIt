@@ -43,7 +43,7 @@ class WeatherModelController {
                 return
             }
             guard json["cod"].intValue == 200 else {
-                log.error("Weather data could not be loaded: \(json)")
+                log.error("Weather could not be loaded: \(json)")
                 return
             }
             
@@ -84,7 +84,7 @@ class WeatherModelController {
                 return
             }
             guard json["cod"].intValue == 200 else {
-                log.error("Forecast data could not be loaded: \(json)")
+                log.error("Forecast could not be loaded: \(json)")
                 return
             }
             
