@@ -42,6 +42,10 @@ class WeatherModelController {
                 log.info("Location not found")
                 return
             }
+            guard json["cod"].intValue == 200 else {
+                log.error("Weather data could not be loaded: \(json)")
+                return
+            }
             
             log.info("Weather loaded")
             
@@ -76,7 +80,11 @@ class WeatherModelController {
             }
             
             if json["cod"].intValue == 404 {
-                log.info("Location not found")
+                log.error("Location not found")
+                return
+            }
+            guard json["cod"].intValue == 200 else {
+                log.error("Forecast data could not be loaded: \(json)")
                 return
             }
             
